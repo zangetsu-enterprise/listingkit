@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ListingKit by Chachi — Listing Marketing Kits for Real Estate Agents</title>
+<meta name="description" content="Generate listing descriptions, open house flyers, and social captions for US real estate listings — with built-in Fair Housing language check. Free for your first listing.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top no-print">
+  <div class="wrap">
+    <div class="brand">ListingKit <span>by Chachi</span></div>
+    <nav class="topnav">
+      <a href="#generator">Generator</a>
+      <a href="#fairhousing">Fair Housing Check</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero no-print">
+  <div class="wrap">
+    <h1>Market every listing in <em>2 minutes</em> — without risking a Fair Housing violation.</h1>
+    <p class="sub">ListingKit writes your listing description, Instagram/Facebook captions, and a printable open house flyer — then scans every word against Fair Housing advertising guidance and suggests compliant rewrites.</p>
+    <div class="bullets">
+      <div>✓ No signup</div>
+      <div>✓ Fair Housing check built in</div>
+      <div>✓ Free for your first listing</div>
+      <div>✓ PRO: $29 one-time, yours forever</div>
+    </div>
+    <a class="btn" href="#generator">Generate my free listing</a>
+    <a class="btn ghost" href="#fairhousing">Check my copy for free</a>
+  </div>
+</section>
+
+<section class="block no-print" id="generator">
+  <div class="wrap">
+    <h2>Listing generator</h2>
+    <p class="lead">Fill in the property facts. ListingKit assembles a compliant description, captions, and flyer. <b>Free plan: 1 listing.</b> <a href="#pricing">PRO ($29 one-time)</a> unlocks unlimited listings.</p>
+    <div class="gen-grid">
+      <div class="card">
+        <form id="genForm" onsubmit="return false;">
+          <div class="field"><label>Street address</label><input id="f_address" placeholder="123 Maple St"></div>
+          <div class="row3">
+            <div class="field"><label>City</label><input id="f_city" placeholder="Austin"></div>
+            <div class="field"><label>State</label><input id="f_state" placeholder="TX" maxlength="2"></div>
+            <div class="field"><label>ZIP</label><input id="f_zip" placeholder="78704"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>List price (USD)</label><input id="f_price" inputmode="numeric" placeholder="485000"></div>
+            <div class="field"><label>Property type</label><select id="f_type">
+              <option value="sfh">Single-family home</option><option value="condo">Condo</option>
+              <option value="townhouse">Townhouse</option><option value="multi">Multi-family</option><option value="land">Land / Lot</option>
+            </select></div>
+          </div>
+          <div class="row3">
+            <div class="field"><label>Beds</label><input id="f_beds" inputmode="numeric" placeholder="4"></div>
+            <div class="field"><label>Baths</label><input id="f_baths" inputmode="decimal" placeholder="3"></div>
+            <div class="field"><label>Sq ft</label><input id="f_sqft" inputmode="numeric" placeholder="2400"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Lot size</label><input id="f_lotSize" placeholder="0.25 acres"></div>
+            <div class="field"><label>Year built</label><input id="f_yearBuilt" inputmode="numeric" placeholder="2015"></div>
+          </div>
+          <fieldset><legend>Features</legend><div class="checks" id="f_features"></div></fieldset>
+          <fieldset><legend>Nearby (neutral, verifiable)</legend><div class="checks">
+            <label><input type="checkbox" id="n_parks"> Parks &amp; green space</label>
+            <label><input type="checkbox" id="n_shopping"> Shopping &amp; dining</label>
+            <label><input type="checkbox" id="n_transit"> Transit routes</label>
+            <label><input type="checkbox" id="n_highway"> Highway access</label>
+          </div></fieldset>
+          <div class="field"><label>Tone</label><select id="f_tone">
+            <option value="professional">Professional</option><option value="warm">Warm &amp; inviting</option>
+            <option value="luxury">Luxury</option><option value="concise">Concise</option>
+          </select></div>
+          <div class="field"><label>Open house (e.g. Sat Oct 17, 11am–2pm)</label><input id="f_openHouse" placeholder="Sat Oct 17, 11am–2pm"></div>
+          <div class="row2">
+            <div class="field"><label>Agent name</label><input id="f_agentName" placeholder="Jane Doe"></div>
+            <div class="field"><label>Agent phone</label><input id="f_agentPhone" placeholder="(512) 555-0142"></div>
+          </div>
+          <div class="field"><label>Brokerage</label><input id="f_brokerage" placeholder="ABC Realty"></div>
+          <div class="field"><label>Extra notes (optional)</label><textarea id="f_notes" placeholder="Anything else buyers should know about the property itself."></textarea></div>
+          <button class="btn dark" id="btnGenerate" style="width:100%">Generate listing kit</button>
+          <p style="font-size:.82rem;color:var(--muted)" id="planNote"></p>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="tabs no-print">
+          <button data-tab="t-desc" class="active">Description</button>
+          <button data-tab="t-social">Social captions</button>
+          <button data-tab="t-flyer">Open house flyer</button>
+          <button data-tab="t-fh">Fair Housing check</button>
+        </div>
+        <div class="tabpane active" id="t-desc">
+          <div class="headline-pick no-print" id="headlinePick"></div>
+          <div class="output-box" id="outDesc">Your generated description will appear here.</div>
+          <div class="toolbar no-print"><button class="btn small dark" data-copy="outDesc">Copy description</button></div>
+        </div>
+        <div class="tabpane" id="t-social">
+          <h4 style="margin:0 0 6px;color:var(--navy)">Instagram</h4>
+          <div class="output-box" id="outIG" style="min-height:140px"></div>
+          <div class="toolbar no-print"><button class="btn small dark" data-copy="outIG">Copy</button></div>
+          <h4 style="margin:18px 0 6px;color:var(--navy)">Facebook</h4>
+          <div class="output-box" id="outFB" style="min-height:120px"></div>
+          <div class="toolbar no-print"><button class="btn small dark" data-copy="outFB">Copy</button></div>
+          <h4 style="margin:18px 0 6px;color:var(--navy)">Just Listed announcement</h4>
+          <div class="output-box" id="outAnn" style="min-height:100px"></div>
+          <div class="toolbar no-print"><button class="btn small dark" data-copy="outAnn">Copy</button></div>
+        </div>
+        <div class="tabpane" id="t-flyer">
+          <div class="flyer" id="flyerPrint">
+            <div class="f-head" id="flHead">Your headline here</div>
+            <div class="f-price" id="flPrice"></div>
+            <div class="f-addr" id="flAddr"></div>
+            <div class="f-specs" id="flSpecs"></div>
+            <ul id="flFeats"></ul>
+            <div class="f-oh" id="flOH" style="display:none"><b>OPEN HOUSE</b><br><span id="flOHText"></span></div>
+            <div class="f-agent"><b id="flAgent"></b><br><span id="flContact"></span></div>
+          </div>
+          <div class="toolbar no-print"><button class="btn small dark" onclick="window.print()">Print / Save as PDF</button></div>
+        </div>
+        <div class="tabpane" id="t-fh">
+          <div id="fhAuto"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block no-print" id="fairhousing" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2>Free Fair Housing language check</h2>
+    <p class="lead">Paste any listing description, caption, or ad. We flag language that HUD guidance and brokerage compliance reviews treat as discriminatory — with the reason and a property-focused fix for each phrase. A single violation can cost <b>$19,787+</b> in HUD penalties.</p>
+    <div class="card">
+      <div class="field"><label>Your listing copy</label><textarea id="fhText" style="min-height:130px" placeholder="Paste your listing description here…"></textarea></div>
+      <div class="toolbar" style="margin-top:0">
+        <button class="btn dark" id="btnCheck">Check my copy</button>
+        <button class="btn small" id="btnAutoFix" style="background:var(--green);color:#fff" disabled>Apply all fixes</button>
+      </div>
+      <div id="fhResults" style="margin-top:16px"></div>
+    </div>
+    <p style="font-size:.82rem;color:var(--muted);max-width:760px">Guidance only — not legal advice. The rule that prevents most violations: <b>describe the property, never the people.</b> When in doubt, have your broker or a fair-housing attorney review the copy.</p>
+  </div>
+</section>
+
+<section class="block no-print" id="pricing">
+  <div class="wrap">
+    <h2 style="text-align:center">Pricing</h2>
+    <p class="lead" style="text-align:center;margin:0 auto 26px">One payment. No subscription. No card on file.</p>
+    <div class="price-grid">
+      <div class="price-card">
+        <h3>Free</h3>
+        <div class="p">$0</div>
+        <ul>
+          <li>1 full listing kit (description + captions + flyer)</li>
+          <li>Fair Housing check with fixes</li>
+          <li>No signup, no card</li>
+        </ul>
+        <a class="btn dark" href="#generator">Start free</a>
+      </div>
+      <div class="price-card pro">
+        <div class="tag">MOST POPULAR</div>
+        <h3>PRO — one-time</h3>
+        <div class="p">$29 <small>once, yours forever</small></div>
+        <ul>
+          <li><b>Unlimited</b> listing kits</li>
+          <li>All 4 tones, printable flyers</li>
+          <li>Fair Housing check on everything</li>
+          <li>Pay with USDT (BSC) or PayPal</li>
+        </ul>
+        <button class="btn" id="btnUnlock">Unlock PRO — $29</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block no-print faq" id="faq">
+  <div class="wrap" style="max-width:820px">
+    <h2>FAQ</h2>
+    <details><summary>Is the Fair Housing check legal advice?</summary><p>No. It's an automated language screen based on publicly documented HUD advertising guidance and industry word lists. It catches the common risky phrases, but it can't replace your broker's compliance review or a fair-housing attorney.</p></details>
+    <details><summary>How does the USDT payment verification work?</summary><p>You send exactly $29 (or more) in USDT on the BNB Smart Chain (BEP-20) to our published address, then paste the transaction hash here. ListingKit reads the transaction receipt from a public BSC node and confirms: the transaction succeeded, it called the USDT contract, and a Transfer event sent ≥ $29 USDT to our address. No account, no keys, no middleman.</p></details>
+    <details><summary>Why crypto? Can I pay with PayPal?</summary><p>Yes — PayPal is available as a manual option: send $29 to our PayPal, email the receipt, and we unlock PRO within 24 hours. USDT is simply instant and automatic.</p></details>
+    <details><summary>Do I need an account?</summary><p>No. Everything runs in your browser. Your free listing counter and PRO unlock are stored locally on your device.</p></details>
+    <details><summary>Who made this?</summary><p>ListingKit is a product by <b>Chachi</b> — marketing tools for independent professionals.</p></details>
+  </div>
+</section>
+
+<footer class="no-print">
+  <div class="wrap">
+    ListingKit by <b style="color:var(--gold)">Chachi</b> · Marketing tools for independent professionals.<br>
+    Fair Housing guidance is informational only and is not legal advice. Always verify copy with your broker or a qualified attorney.<br>
+    Equal Housing Opportunity.
+  </div>
+</footer>
+
+<!-- PRO unlock modal -->
+<div class="modal-back" id="payModal">
+  <div class="modal">
+    <button class="x" id="payClose">×</button>
+    <h3>Unlock ListingKit PRO — $29 one-time</h3>
+    <div class="paytabs">
+      <button id="ptUSDT" class="active">USDT (instant)</button>
+      <button id="ptPayPal">PayPal (manual)</button>
+    </div>
+    <div id="paneUSDT">
+      <p style="font-size:.92rem">Send <b>$29 USDT</b> on <b>BNB Smart Chain (BEP-20)</b> to:</p>
+      <div class="addr-box" id="usdtAddr"></div>
+      <button class="btn small dark" id="btnCopyAddr">Copy address</button>
+      <div class="field" style="margin-top:14px"><label>Paste your transaction hash (0x…)</label>
+        <input id="txHash" placeholder="0x…" style="font-family:monospace;font-size:.85rem">
+      </div>
+      <button class="btn" id="btnVerify" style="width:100%">Verify payment &amp; unlock PRO</button>
+      <div class="verify-status" id="verifyStatus"></div>
+      <p style="font-size:.8rem;color:var(--muted)">We read the public transaction receipt from BSC nodes and confirm a successful USDT Transfer of ≥ $29 to the address above. Already-used hashes can't unlock twice.</p>
+    </div>
+    <div id="panePayPal" style="display:none">
+      <p style="font-size:.92rem">Send <b>$29 USD</b> via PayPal to <b id="ppEmail"></b> with the note below, then email your receipt to the same address:</p>
+      <div class="addr-box" id="ppCode"></div>
+      <a class="btn dark" id="ppMailto" href="#" style="width:100%;text-align:center">Email my receipt</a>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:10px">Manual review — PRO is unlocked within 24 hours of receipt.</p>
+    </div>
+  </div>
+</div>
+
+<script src="lib.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
